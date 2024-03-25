@@ -37,11 +37,11 @@ if __name__ == '__main__':
     if not is_bitlink(token, url):
         try:
             url = shorten_link(token, url)
-            print(f"Сокращенная ссылка: {url}")
+            print(f"Short url: {url}")
         except requests.HTTPError:
-            print("Некорректная ссылка для сокращения!")
+            print("Invalid url for shortening!")
     try:
         click_count = count_clicks(token, url)
-        print(f"По Вашей ссылке перешли {click_count} раз")
+        print(f"Your url was clicked {click_count} time(s)")
     except requests.HTTPError:
-        print(f"Не удалось получить количество переходов для {url}")
+        print(f"Could not get the number of clicks for {url}")
