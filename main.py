@@ -1,4 +1,3 @@
-import argparse
 import os
 import requests
 from dotenv import load_dotenv
@@ -12,46 +11,37 @@ def shorten_link(token, url):
     payload = {"long_url": url}
     response = requests.post(API_URL, headers=headers, json=payload)
     response.raise_for_status()
-    if response.ok:
-        return response.json().get("link")
+    return response.json().get("link")
 
 
 def count_clicks(token, link):
-    domain = urlparse(link).netloc
-    path = urlparse(link).path
+    parse_url = urlparse(link)
     headers = {"Authorization": f"Bearer {token}"}
-    response = requests.get(f"{API_URL}{domain + path}/clicks/summary", headers=headers)
+    response = requests.get(f"{API_URL}{parse_url.netloc}{parse_url.path}/clicks/summary", headers=headers)
     response.raise_for_status()
+    return response.json().get("total_clicks")
+
+
+def is_bitlink(token, url):
+    parse_url = urlparse(url)
+    headers = {"Authorization": f"Bearer {token}"}
+    response = requests.get(f"{API_URL}{parse_url.netloc}{parse_url.path}", headers=headers)
     if response.ok:
-        return response.json().get("total_clicks")
-
-
-def is_bitlink(url):
-    domain = urlparse(url).netloc
-    return True if domain == "bit.ly" else False
+        return True
 
 
 if __name__ == '__main__':
     load_dotenv()
-    token = os.getenv("token")
-    parser = argparse.ArgumentParser()
-    parser.add_argument('url', help='Any url')
-    args = parser.parse_args()
-    url = args.url
-    if is_bitlink(url):
+    token = os.environ["BITLY_BEARER_TOKEN"]
+    url = input()
+    if not is_bitlink(token, url):
         try:
-            click_count = count_clicks(token, url)
-            print(f"По Вашей ссылке перешли {click_count} раз")
-        except:
-            print(f"Не удалось получить количество переходов для {url}")
-    else:
-        try:
-            bitlink = shorten_link(token, url)
-            print(f"Сокращенная ссылка: {bitlink}")
-        except:
+            url = shorten_link(token, url)
+            print(f"Сокращенная ссылка: {url}")
+        except requests.HTTPError:
             print("Некорректная ссылка для сокращения!")
-        try:
-            click_count = count_clicks(token, bitlink)
-            print(f"По Вашей ссылке перешли {click_count} раз")
-        except:
-            print(f"Не удалось получить количество переходов для {bitlink}")
+    try:
+        click_count = count_clicks(token, url)
+        print(f"По Вашей ссылке перешли {click_count} раз")
+    except requests.HTTPError:
+        print(f"Не удалось получить количество переходов для {url}")
