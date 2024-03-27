@@ -38,6 +38,6 @@ Short url: https://bit.ly/3x9NyXX
 Your url was clicked 1 time(s) 
 ```
 
-### Project Goals
+# Project Goals
 
 This code was written for educational purposes as part of an online course for web developers at dvmn.org.
