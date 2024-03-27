@@ -16,17 +16,17 @@ def shorten_link(token, url):
 
 
 def count_clicks(token, link):
-    parsing_url = urlparse(link)
+    parsed_url = urlparse(link)
     headers = {"Authorization": f"Bearer {token}"}
-    response = requests.get(f"{API_URL}{parsing_url.netloc}{parsing_url.path}/clicks/summary", headers=headers)
+    response = requests.get(f"{API_URL}{parsed_url.netloc}{parsed_url.path}/clicks/summary", headers=headers)
     response.raise_for_status()
     return response.json().get("total_clicks")
 
 
 def is_bitlink(token, url):
-    parsing_url = urlparse(url)
+    parsed_url = urlparse(url)
     headers = {"Authorization": f"Bearer {token}"}
-    response = requests.get(f"{API_URL}{parsing_url.netloc}{parsing_url.path}", headers=headers)
+    response = requests.get(f"{API_URL}{parsed_url.netloc}{parsed_url.path}", headers=headers)
     return response.ok
 
 
