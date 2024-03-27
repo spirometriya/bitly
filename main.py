@@ -1,3 +1,4 @@
+import argparse
 import os
 import requests
 from dotenv import load_dotenv
@@ -32,7 +33,12 @@ def is_bitlink(token, url):
 if __name__ == '__main__':
     load_dotenv()
     token = os.environ["BITLY_BEARER_TOKEN"]
-    url = input()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        'url',
+        help='Any url')
+    args = parser.parse_args()
+    url = args.url
     if is_bitlink(token, url):
         try:
             click_count = count_clicks(token, url)

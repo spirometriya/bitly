@@ -1,4 +1,4 @@
-# Bitly
+# Bitly URL shortener
 The script make urls shorter and shows how many times followed the url. 
 
 # How to start
@@ -29,13 +29,15 @@ BITLY_BEARER_TOKEN=ab5a34ft462d107da143a9c011g67b5df7470360
 Launch on Linux or Windows as simple
 
 ```bash
-$ python main.py 
-https://mysite.com
+$ python main.py https://mysite.com
 
 # You will see
 
-$ python main.py 
-https://mysite.com
+$ python main.py https://mysite.com
 Short url: https://bit.ly/3x9NyXX
 Your url was clicked 1 time(s) 
 ```
+
+### Project Goals
+
+This code was written for educational purposes as part of an online course for web developers at dvmn.org.
